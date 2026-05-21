@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Work With Me — Joshua Deinne</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0a0a0a;
+    --paper: #f5f0e8;
+    --gold: #c9a84c;
+    --gold-light: #e8d08a;
+    --rust: #b84a2e;
+    --muted: #7a7060;
+    --line: rgba(10,10,10,0.12);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 10px; height: 10px;
+    background: var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease;
+    mix-blend-mode: multiply;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transition: all 0.25s ease;
+    mix-blend-mode: multiply;
+  }
+
+  /* Noise overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 48px;
+    border-bottom: 1px solid var(--line);
+    background: rgba(245,240,232,0.85);
+    backdrop-filter: blur(12px);
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .logo span { color: var(--gold); }
+
+  nav { display: flex; gap: 32px; }
+  nav a {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--ink); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 80px;
+  }
+
+  .hero-left {
+    padding: 80px 48px 80px 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-right: 1px solid var(--line);
+    position: relative;
+  }
+
+  .hero-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.2s;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 6vw, 88px);
+    font-weight: 300;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.4s;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-desc {
+    font-size: 13px;
+    color: var(--muted);
+    max-width: 380px;
+    line-height: 1.9;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.6s;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 14px 28px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.8s;
+    width: fit-content;
+  }
+
+  .hero-cta:hover {
+    background: var(--gold);
+    color: var(--ink);
+    gap: 20px;
+  }
+
+  .hero-cta-arrow { font-size: 16px; }
+
+  .hero-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 80px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-15deg);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 180px;
+    font-weight: 300;
+    color: rgba(201,168,76,0.06);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 1s;
+  }
+
+  .stat-item {
+    background: var(--paper);
+    padding: 32px 28px;
+    transition: background 0.3s;
+  }
+
+  .stat-item:hover { background: #ece6d8; }
+
+  .stat-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+  }
+
+  /* ─── DIVIDER ─── */
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 0 48px;
+    margin: 0;
+  }
+
+  .divider-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  /* ─── WHAT I DO ─── */
+  .what-section {
+    padding: 100px 48px;
+    border-top: 1px solid var(--line);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 24px;
+    margin-bottom: 64px;
+  }
+
+  .section-number {
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 300;
+    line-height: 1.1;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+
+  .service-card {
+    background: var(--paper);
+    padding: 40px 32px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 0;
+    background: var(--gold);
+    transition: height 0.4s ease;
+  }
+
+  .service-card:hover { background: #ece6d8; }
+  .service-card:hover::before { height: 100%; }
+
+  .service-icon {
+    font-size: 28px;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .service-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+  }
+
+  .service-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  /* ─── HOW I WORK ─── */
+  .how-section {
+    padding: 100px 48px;
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .how-left { position: sticky; top: 120px; }
+
+  .how-intro {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.9;
+    margin-top: 24px;
+  }
+
+  .process-list { display: flex; flex-direction: column; gap: 1px; background: var(--line); }
+
+  .process-item {
+    background: var(--paper);
+    padding: 32px;
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 24px;
+    align-items: start;
+    transition: background 0.3s;
+  }
+
+  .process-item:hover { background: #ece6d8; }
+
+  .process-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .process-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+
+  .process-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  /* ─── PROJECTS ─── */
+  .projects-section {
+    padding: 100px 48px;
+    border-top: 1px solid var(--line);
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    margin-top: 64px;
+  }
+
+  .project-card {
+    background: var(--paper);
+    padding: 40px 36px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+
+  .project-card:hover { background: #ece6d8; }
+
+  .project-tag {
+    display: inline-block;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold-light);
+    padding: 4px 10px;
+    margin-bottom: 20px;
+  }
+
+  .project-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .project-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 24px;
+  }
+
+  .project-meta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .project-pill {
+    font-size: 10px;
+    background: rgba(201,168,76,0.1);
+    color: var(--muted);
+    padding: 4px 12px;
+    letter-spacing: 0.1em;
+  }
+
+  .project-users {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 300;
+    color: rgba(201,168,76,0.15);
+    position: absolute;
+    bottom: 20px;
+    right: 24px;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  /* ─── STACK ─── */
+  .stack-section {
+    padding: 80px 48px;
+    border-top: 1px solid var(--line);
+  }
+
+  .stack-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 48px;
+  }
+
+  .stack-tag {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    padding: 8px 18px;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    transition: all 0.25s;
+  }
+
+  .stack-tag:hover {
+    border-color: var(--gold);
+    color: var(--ink);
+    background: rgba(201,168,76,0.06);
+  }
+
+  /* ─── TERMS ─── */
+  .terms-section {
+    padding: 100px 48px;
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+  }
+
+  .terms-list { display: flex; flex-direction: column; gap: 20px; }
+
+  .term-item {
+    display: flex;
+    gap: 16px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .term-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    margin-top: 7px;
+    flex-shrink: 0;
+  }
+
+  .term-text { font-size: 13px; color: var(--muted); line-height: 1.7; }
+  .term-text strong { color: var(--ink); font-weight: 500; }
+
+  /* ─── CTA SECTION ─── */
+  .cta-section {
+    padding: 120px 48px;
+    border-top: 1px solid var(--line);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(201,168,76,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+
+  .cta-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(44px, 6vw, 80px);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cta-heading em { font-style: italic; color: var(--gold); }
+
+  .cta-sub {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 48px;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 16px 36px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+
+  .btn-primary:hover { background: var(--gold); color: var(--ink); }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--ink);
+    color: var(--ink);
+    padding: 16px 36px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s;
+    background: transparent;
+  }
+
+  .btn-secondary:hover { background: var(--ink); color: var(--paper); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 32px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-copy {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a {
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--gold); }
+
+  /* ─── SCROLL REVEAL ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── AVAILABILITY BADGE ─── */
+  .availability {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #2d6a4f;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.1s;
+  }
+
+  .avail-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #52b788;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.3); }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    header { padding: 20px 24px; }
+    nav { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .hero-left { padding: 60px 24px; }
+    .what-section, .projects-section, .stack-section, .cta-section { padding: 60px 24px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .how-section { grid-template-columns: 1fr; padding: 60px 24px; gap: 40px; }
+    .how-left { position: static; }
+    .terms-section { grid-template-columns: 1fr; padding: 60px 24px; gap: 40px; }
+    footer { flex-direction: column; gap: 16px; padding: 24px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">Joshua <span>Deinne</span></div>
+  <nav>
+    <a href="#services">Services</a>
+    <a href="#process">Process</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="availability">
+      <span class="avail-dot"></span>
+      Available for remote work
+    </div>
+    <div class="hero-eyebrow">Backend Engineer · Builder · Lagos, Nigeria</div>
+    <h1 class="hero-title">
+      I build<br/>
+      products that<br/>
+      <em>actually ship.</em>
+    </h1>
+    <p class="hero-desc">
+      Laravel backend developer and founder. I turn complex problems into clean, scalable systems — from SaaS platforms to FinTech infrastructure. I've built products serving real users in the wild, not just localhost.
+    </p>
+    <a href="#contact" class="hero-cta">
+      Let's work together
+      <span class="hero-cta-arrow">→</span>
+    </a>
+  </div>
+  <div class="hero-right">
+    <div class="hero-bg-text">Builder</div>
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number">1,400+</div>
+        <div class="stat-label">Platform Users</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">5+</div>
+        <div class="stat-label">Products Launched</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">4+</div>
+        <div class="stat-label">Years Building</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">GMT+1</div>
+        <div class="stat-label">Timezone</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="what-section" id="services">
+  <div class="section-header reveal">
+    <span class="section-number">01 /</span>
+    <h2 class="section-title">What I<br/>can build<br/><em style="font-style:italic; color:var(--gold)">for you</em></h2>
+  </div>
+  <div class="services-grid reveal">
+    <div class="service-card">
+      <span class="service-icon">⬡</span>
+      <div class="service-name">SaaS Backends</div>
+      <p class="service-desc">Multi-tenant systems, subscription logic, REST APIs, admin dashboards — built to scale from day one. Laravel is my native language.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">◈</span>
+      <div class="service-name">FinTech Integration</div>
+      <p class="service-desc">Payment gateway integration (Paystack, Flutterwave, NQR/QR standards), wallet systems, and financial compliance architecture.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">◎</span>
+      <div class="service-name">EdTech Platforms</div>
+      <p class="service-desc">Learning management, exam engines, AI-powered features, user analytics. Built and shipped Psalmedu to 1,400+ active users.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">⬕</span>
+      <div class="service-name">API Architecture</div>
+      <p class="service-desc">Clean, documented, versioned APIs your frontend team will actually enjoy consuming. OpenAPI spec, rate limiting, auth — done right.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">◫</span>
+      <div class="service-name">AI Feature Integration</div>
+      <p class="service-desc">OpenAI/Claude API integration into your product — intelligent features, automated workflows, and AI-powered user experiences.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">⬘</span>
+      <div class="service-name">Technical Consulting</div>
+      <p class="service-desc">Architecture review, tech stack decisions, legacy codebase rescue. Sometimes you need someone who's seen how things break.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW I WORK -->
+<section class="how-section" id="process">
+  <div class="how-left reveal">
+    <div class="section-header" style="flex-direction:column; align-items:flex-start; gap:12px;">
+      <span class="section-number">02 /</span>
+      <h2 class="section-title">How<br/>I work</h2>
+    </div>
+    <p class="how-intro">
+      Remote-first, async-friendly, and outcome-obsessed. I don't just write code — I think about the product, the user, and the business.
+    </p>
+  </div>
+  <div class="process-list reveal">
+    <div class="process-item">
+      <div class="process-num">01</div>
+      <div>
+        <div class="process-name">Discovery & Scoping</div>
+        <p class="process-desc">I ask the hard questions first. What are we building, why does it exist, and what does success look like? No vague briefs — I document everything before touching code.</p>
+      </div>
+    </div>
+    <div class="process-item">
+      <div class="process-num">02</div>
+      <div>
+        <div class="process-name">Architecture First</div>
+        <p class="process-desc">Database schema, system design, API contracts — before the first line of logic is written. Shortcuts here cost three times more later.</p>
+      </div>
+    </div>
+    <div class="process-item">
+      <div class="process-num">03</div>
+      <div>
+        <div class="process-name">Async-first Communication</div>
+        <p class="process-desc">I work across timezones (GMT+1, Lagos). I over-communicate in writing, document decisions, and keep you in the loop without daily stand-up theatre.</p>
+      </div>
+    </div>
+    <div class="process-item">
+      <div class="process-num">04</div>
+      <div>
+        <div class="process-name">Ship, Iterate, Improve</div>
+        <p class="process-desc">I believe in working software over perfect software. We ship, gather feedback, and improve — not theorize for months before launch.</p>
+      </div>
+    </div>
+    <div class="process-item">
+      <div class="process-num">05</div>
+      <div>
+        <div class="process-name">Handoff with Documentation</div>
+        <p class="process-desc">When we're done, you own it. Clean code, written docs, and a project you can maintain or hand to any other developer without mystery.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects-section" id="projects">
+  <div class="section-header reveal">
+    <span class="section-number">03 /</span>
+    <h2 class="section-title">What I've<br/><em style="font-style:italic; color:var(--gold)">shipped</em></h2>
+  </div>
+  <div class="projects-grid reveal">
+    <div class="project-card">
+      <span class="project-tag">EdTech · SaaS</span>
+      <h3 class="project-name">Psalmedu</h3>
+      <p class="project-desc">Academic platform for NOUN students. Mock exams, AI-powered answer explanations via OpenAI, admin analytics dashboard, timetable converter, bulk PDF downloading.</p>
+      <div class="project-meta">
+        <span class="project-pill">Laravel</span>
+        <span class="project-pill">OpenAI API</span>
+        <span class="project-pill">MySQL</span>
+        <span class="project-pill">Livewire</span>
+      </div>
+      <div class="project-users">1.4k</div>
+    </div>
+    <div class="project-card">
+      <span class="project-tag">FinTech · SaaS</span>
+      <h3 class="project-name">ChurchPay</h3>
+      <p class="project-desc">SaaS for Nigerian churches to generate NQR-compliant QR codes for digital offerings. Full multi-tenant architecture with subscription billing and analytics.</p>
+      <div class="project-meta">
+        <span class="project-pill">Laravel</span>
+        <span class="project-pill">NQR/QR</span>
+        <span class="project-pill">Paystack</span>
+        <span class="project-pill">Multi-tenant</span>
+      </div>
+    </div>
+    <div class="project-card">
+      <span class="project-tag">GovTech · EdTech</span>
+      <h3 class="project-name">SIWESIT</h3>
+      <p class="project-desc">Nigeria-focused IT SIWES management platform. AI Auto-Teaching Engine using scheduled jobs for daily log generation, weekly AI quizzes, and supervisor workflows.</p>
+      <div class="project-meta">
+        <span class="project-pill">Laravel 11</span>
+        <span class="project-pill">AI Engine</span>
+        <span class="project-pill">Paystack</span>
+        <span class="project-pill">Queue Jobs</span>
+      </div>
+    </div>
+    <div class="project-card">
+      <span class="project-tag">Marketplace · Mobile</span>
+      <h3 class="project-name">Local Discovery App</h3>
+      <p class="project-desc">Location-based business discovery app targeting Nigeria's informal economy. Built to connect buyers with unregistered local vendors via geolocation.</p>
+      <div class="project-meta">
+        <span class="project-pill">Flutter</span>
+        <span class="project-pill">Firebase</span>
+        <span class="project-pill">Geolocation</span>
+        <span class="project-pill">Real-time</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section class="stack-section">
+  <div class="section-header reveal">
+    <span class="section-number">04 /</span>
+    <h2 class="section-title">My stack</h2>
+  </div>
+  <div class="stack-row reveal">
+    <span class="stack-tag">PHP</span>
+    <span class="stack-tag">Laravel</span>
+    <span class="stack-tag">Livewire</span>
+    <span class="stack-tag">MySQL</span>
+    <span class="stack-tag">PostgreSQL</span>
+    <span class="stack-tag">Redis</span>
+    <span class="stack-tag">REST APIs</span>
+    <span class="stack-tag">OpenAI API</span>
+    <span class="stack-tag">Paystack</span>
+    <span class="stack-tag">Flutterwave</span>
+    <span class="stack-tag">Flutter</span>
+    <span class="stack-tag">Firebase</span>
+    <span class="stack-tag">Git / GitHub</span>
+    <span class="stack-tag">Linux / Ubuntu</span>
+    <span class="stack-tag">Queue Jobs</span>
+    <span class="stack-tag">Cron / Scheduler</span>
+    <span class="stack-tag">Tailwind CSS</span>
+    <span class="stack-tag">JavaScript</span>
+    <span class="stack-tag">Python (basics)</span>
+    <span class="stack-tag">Tkinter</span>
+  </div>
+</section>
+
+<!-- TERMS -->
+<section class="terms-section">
+  <div class="reveal">
+    <div class="section-header" style="flex-direction:column; align-items:flex-start; gap:12px; margin-bottom:40px;">
+      <span class="section-number">05 /</span>
+      <h2 class="section-title">The practical<br/><em style="font-style:italic; color:var(--gold)">details</em></h2>
+    </div>
+    <p style="font-size:13px; color:var(--muted); line-height:1.9;">
+      I believe in transparency before contracts. Here's how I work, what I expect, and what you can expect from me.
+    </p>
+  </div>
+  <div class="terms-list reveal">
+    <div class="term-item">
+      <div class="term-dot"></div>
+      <div class="term-text"><strong>Timezone:</strong> GMT+1 (Lagos, Nigeria). Available overlaps with UK morning, EU business hours, and US East Coast afternoons.</div>
+    </div>
+    <div class="term-item">
+      <div class="term-dot"></div>
+      <div class="term-text"><strong>Availability:</strong> Open to full-time remote roles and long-term contract engagements. Not interested in one-off gigs under 4 weeks.</div>
+    </div>
+    <div class="term-item">
+      <div class="term-dot"></div>
+      <div class="term-text"><strong>Payment:</strong> I receive via Deel, Wise, or Payoneer — no friction, no delays. International payments are fully handled.</div>
+    </div>
+    <div class="term-item">
+      <div class="term-dot"></div>
+      <div class="term-text"><strong>Communication:</strong> Async-first. I respond within 4 hours during business hours. I document everything and over-communicate on blockers.</div>
+    </div>
+    <div class="term-item">
+      <div class="term-dot"></div>
+      <div class="term-text"><strong>Rate:</strong> Market-competitive. Starting from $4,500/month for full-time engagements. Project rates quoted per scope.</div>
+    </div>
+    <div class="term-item">
+      <div class="term-dot"></div>
+      <div class="term-text"><strong>What I won't do:</strong> Unpaid trials, scope creep without renegotiation, or projects with no clear outcome definition.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="cta-bg"></div>
+  <p class="cta-eyebrow reveal">Ready to build something?</p>
+  <h2 class="cta-heading reveal">
+    Let's make your<br/>
+    <em>next product</em><br/>
+    the real one.
+  </h2>
+  <p class="cta-sub reveal">Send me a message with what you're building. I'll respond within 24 hours.</p>
+  <div class="cta-buttons reveal">
+    <a href="mailto:hello@daveristech.com" class="btn-primary">
+      Email me →
+    </a>
+    <a href="https://linkedin.com/in/joshuadeinne" class="btn-secondary">
+      LinkedIn
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-copy">© 2025 Joshua Deinne · Daveris Tech</div>
+  <div class="footer-links">
+    <a href="#">GitHub</a>
+    <a href="#">LinkedIn</a>
+    <a href="#">Arc.dev</a>
+    <a href="mailto:hello@daveristech.com">Email</a>
+  </div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx - 5 + 'px';
+    cursor.style.top = my - 5 + 'px';
+  });
+
+  function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx - 18 + 'px';
+    ring.style.top = ry - 18 + 'px';
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'scale(2.5)';
+      ring.style.transform = 'scale(1.4)';
+      ring.style.borderColor = 'var(--rust)';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'scale(1)';
+      ring.style.transform = 'scale(1)';
+      ring.style.borderColor = 'var(--gold)';
+    });
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
